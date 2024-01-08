@@ -1,0 +1,19 @@
+{
+  "name": "bharat-intern-money-tracker-web-app",
+  "version": "1.0.0",
+  "description": "Money Tracker web app in NodeJS, MongoDB, HTML and CSS.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sandesh5522/Bharat-Intern-Money-Tracker-Web-App.git"
+  },
+  "author": "Sandesh Sutar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sandesh5522/Bharat-Intern-Money-Tracker-Web-App/issues"
+  },
+  "homepage": "https://github.com/Sandesh5522/Bharat-Intern-Money-Tracker-Web-App#readme"
+}
