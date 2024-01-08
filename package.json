@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Sandesh5522/Bharat-Intern-Money-Tracker-Web-App/issues"
   },
-  "homepage": "https://github.com/Sandesh5522/Bharat-Intern-Money-Tracker-Web-App#readme"
+  "homepage": "https://github.com/Sandesh5522/Bharat-Intern-Money-Tracker-Web-App#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
