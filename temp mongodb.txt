@@ -1,0 +1,136 @@
+MongoDB details:
+PS C:\code\Bharat Intern internship projects\Bharat-Intern-Registration-Form> mongosh
+Current Mongosh Log ID: 65916cd280688fa326b01182
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2
+Using MongoDB:          6.0.4
+Using Mongosh:          1.6.2
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+Commands:
+test> show dbs
+admin   40.00 KiB
+config  72.00 KiB
+local   92.00 KiB
+
+test> use nodereg
+switched to db nodereg
+
+nodereg> db.coll01
+nodereg.coll01
+
+nodemt> db.createCollection('nodecoll')
+{ ok: 1 }
+nodemt> show collections
+nodecoll
+
+nodereg> db.coll01.insertOne({name:"name01",phone:584651,password:"ht5621f5g"});
+{
+  acknowledged: true,
+  insertedId: ObjectId("65916e1e7bb2ea3a5a387ac7")
+}
+
+nodereg> db.coll01.deleteOne({"_id":ObjectId("6591adcf4457724dbddf7a5f")})
+{ acknowledged: true, deletedCount: 1 }
+
+nodereg> db.coll01.find()
+[
+  {
+    _id: ObjectId("65916e1e7bb2ea3a5a387ac7"),
+    name: 'name01',
+    phone: 584651,
+    password: 'ht5621f5g'
+  }
+]
+
+nodereg> show collections
+coll01
+
+nodereg> show dbs
+admin     40.00 KiB
+config   108.00 KiB
+local     92.00 KiB
+nodereg   40.00 KiB
+
+
+Mongoose commands:
+To start in a cmd use:
+node --experimental-repl-await
+
+const mongoose = require('mongoose')
+
+mongooose
+
+mongoose.connect('mongodb://localhost:27017/newnode')
+
+> const nodeschema = new mongoose.Schema({
+... name: String,
+... phone: Number
+... })
+
+const one = mongoose.model('model01', nodeschema)
+
+> one
+Model { model01 }
+> const sam = new one({
+... name: "name01",
+... phone: 68495
+... })
+undefined
+> sam
+{
+  name: 'name01',
+  phone: 68495,
+  _id: new ObjectId('65931e006156d67f835e3665')
+}
+> await sam.save()
+{
+  name: 'name01',
+  phone: 68495,
+  _id: new ObjectId('65931e006156d67f835e3665'),
+  __v: 0
+}
+> await one.find()
+[  
+  {
+    _id: new ObjectId('65931e006156d67f835e3665'),
+    name: 'name01',
+    phone: 68495,
+    __v: 0
+  }
+]
+> await one.findById('65931e006156d67f835e3665')
+{
+  _id: new ObjectId('65931e006156d67f835e3665'),
+  name: 'name01',
+  phone: 68495,
+  __v: 0
+}
+> await one.find({name:"name01"})
+[
+  {
+    _id: new ObjectId('65931e006156d67f835e3665'),
+    name: 'name01',
+    phone: 68495,
+    __v: 0
+  }
+]
+>
+
+Model.deleteMany()
+Model.deleteOne()
+Model.find()
+Model.findById()
+Model.findByIdAndDelete()
+Model.findByIdAndRemove()
+Model.findByIdAndUpdate()
+Model.findOne()
+Model.findOneAndDelete()
+Model.findOneAndReplace()
+Model.findOneAndUpdate()
+Model.replaceOne()
+Model.updateMany()
+Model.updateOne()
+
+nodereg01> db.dropDatabase()
+{ ok: 1, dropped: 'nodereg01' }
