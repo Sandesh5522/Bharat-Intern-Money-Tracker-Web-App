@@ -3,9 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            /* -webkit-text-size-adjust: 100%; */
+            /* -webkit-tap-highlight-color: rgba(0, 0, 0, 0); */
+            font-size: 16px;
+        }
+
+        body {
+            background-color: #c5c5c5;
+            font-family: "Bahnschrift", sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #8a1f1f;
+            overflow-x: hidden;
+            overflow-wrap: break-word;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-font-smoothing: antialiased;
+            padding: 50px;
+        }
+
+        .container {
+            font-family: "Bahnschrift", sans-serif;
+            background-color: white;
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 40px;
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+            border-radius: 3px;
+        }
+
+        input {
+            font-family: "Bahnschrift";
+            font-size: 15px;
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            border: 1px solid #bbbbbb;
+            border-radius: 3px;
+        }
+
+        input:hover {
+            border-color: #2e2e2e;
+        }
+
+        input:focus {
+            border-color: #004bbd;
+        }
+
+        [type="button"] {
+            font-family: "Bahnschrift", sans-serif;
+            font-size: 15px;
+            background: #00c95a;
+            color: black;
+            border: 1px solid rgba(0, 0, 0, 0.175);
+            border-radius: 3px;
+            padding: 12px 0;
+            cursor: pointer;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            margin-top: 5px;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        [type="button"]:hover {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+        [type="submit"] {
+            font-family: "Bahnschrift", sans-serif;
+            font-size: 15px;
+            background: #00c95a;
+            color: black;
+            border: 1px solid rgba(0, 0, 0, 0.175);
+            border-radius: 3px;
+            padding: 12px 0;
+            cursor: pointer;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            margin-top: 5px;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        [type="submit"]:hover {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $(document.body).hide();
+            $("input").hide();
+            $(document.body).fadeIn(500);
+            $("input").fadeIn(1500);
+            var i = 0;
+            var the_class = "expense";
+            $("#add_expense").click(function() {
+                $("#divone").append(function() {
+                    i++;
+                    the_id = "expense"+i;
+                    $("#divone").append("<input type='text' class="+the_class+" placeholder='Expense name'><input type='text' class="+the_class+" placeholder='Amount'>");
+                });
+            });
+            $("#send").click(function() {
+                $("#divone").append($("[class=expense"+i+"]").val());
+            });
+            // $("#divone").append(function() {
+            //     $("#expense1").val();
+            // });
+        });
+    </script>
     <title>Home</title>
 </head>
 <body>
-    Welcome to Money Tracker.
+    <p class="container">Welcome to Money Tracker!!</p>
+    <div class="container">
+        <input type="button" value="send" id="send">
+        <input type="button" value="Add expense" id="add_expense">
+        <div class="container" id="divone">
+        </div>
+    </div>
 </body>
 </html>
