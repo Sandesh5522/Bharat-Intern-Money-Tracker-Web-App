@@ -22,6 +22,14 @@ async function run() {
 }
 run().catch(console.dir);
 
+app.use(bodyParser.json(), bodyParser.urlencoded({ extended: true }), express.static('public'));
+
+function addData(db, data){
+    var coll_id = Number;
+    const result = db.collection(collname+(coll_id+1)).insertMany(data, {ordered:true});
+    console.log("Rows inserted:"+result.insertedCount);
+}
+
 app.get('/home', (req,res) => {
     client.connect();
     const db = client.db(dbname);
@@ -29,6 +37,16 @@ app.get('/home', (req,res) => {
     res.sendFile(filePath);
 });
 
+app.post('/send', (req,res) => {
+    client.connect();
+    const db = client.db(dbname);
+    console.log(req.body.data);
+    console.log(req.body.data.length);
+    addData(db, req.body.data);
+    // const filePath = path.resolve('views','res.html');
+    // res.sendFile(filePath);
+});
+
 app.listen(port, () => {
-    console.log('App listening at port http://localhost:${port}/home');
+    console.log('App listening at port http://localhost:'+port+'/home');
 });

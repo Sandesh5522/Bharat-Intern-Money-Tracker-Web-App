@@ -92,6 +92,7 @@
         }
 
         [type="submit"]:hover {
+            background: #00caaf;
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         }
     </style>
@@ -102,32 +103,100 @@
             $("input").hide();
             $(document.body).fadeIn(500);
             $("input").fadeIn(1500);
+            var lastDate = new Date();
+            lastDate.setDate(lastDate.getDate());
+            $("#e_id").date('setDate', lastDate);
             var i = 0;
-            var the_class = "expense";
+            var expense_class = "expense";
+            var amount_class = "amount";
             $("#add_expense").click(function() {
                 $("#divone").append(function() {
                     i++;
-                    the_id = "expense"+i;
-                    $("#divone").append("<input type='text' class="+the_class+" placeholder='Expense name'><input type='text' class="+the_class+" placeholder='Amount'>");
+                    the_id = "expense";
+                    $("#divone").append("<input type='text' class="+expense_class+i+" placeholder='Expense name'><input type='text' class="+amount_class+i+" placeholder='Amount'>");
                 });
             });
             $("#send").click(function() {
-                $("#divone").append($("[class=expense"+i+"]").val());
+                $("#divone").append($("[class=expense"+i+"]").val(),$("[class=amount"+i+"]").val());
             });
-            // $("#divone").append(function() {
-            //     $("#expense1").val();
-            // });
+            $("#ae").click(function() {
+                for (j=1;j<=i;j++)
+                {
+                    $("#divone").append($("[class=expense"+j+"]").val(),$("[class=amount"+j+"]").val());
+                }
+            });
+            function sendData(dataObj) {
+                $.ajax({
+                    url:"http://localhost:3000/send",
+                    method:"POST",
+                    data:dataObj,
+                    // data:{action:'fetch'},
+                    dataType:"JSON",
+                    success:function(data)
+                    {
+                        alert("Data sent!");
+                    }
+                });
+            }
+            $("#sdata").click(function() {
+                var jsonObj = [];
+                var expenses_data = {};
+                var j = 0;
+                // for(j=1;j<=i;j++)
+                // {
+                //     // expenses_data ["e_name"] = $(".expense"+j).val();
+                //     // expenses_data ["e_amt"] = $(".amount"+j).val();
+                //     expenses_data ["e_name"+j] = $("[class=expense"+j+"]").val();
+                //     expenses_data ["e_amt"+j] = $("[class=amount"+j+"]").val();
+                //     // jsonObj.push(expenses_data);
+                // }
+                for(j=1;j<=i;j++)
+                {
+                    var e_name = $("[class=expense"+j+"]").val();
+                    var e_amt = $("[class=amount"+j+"]").val();
+                    tmp = {
+                        'e_name' : e_name,
+                        'e_amt' : e_amt
+                    };
+                    jsonObj.push(tmp);
+                }
+                // expenses_data ["e_name"] = $(".expense1").val();
+                // expenses_data ["e_amt"] = $(".amount1").val();
+                // jsonObj.push(expenses_data);
+                function sendData(dataObj) {
+                    $.ajax({
+                        url:"/send",
+                        type:"POST",
+                        // method:"POST",
+                        // data:{data:JSON.stringify(dataObj)},
+                        data:{data:dataObj},
+                        dataType:"JSON",
+                        success:function(data)
+                        {
+                            alert("Data sent:"+data);
+                        }
+                    });
+                }
+                sendData(jsonObj);
+                alert(JSON.stringify(jsonObj));
+                console.log(jsonObj);
+            });
         });
     </script>
     <title>Home</title>
 </head>
 <body>
-    <p class="container">Welcome to Money Tracker!!</p>
+    <h2 class="container">Welcome to Money Tracker!!</h2>
     <div class="container">
-        <input type="button" value="send" id="send">
-        <input type="button" value="Add expense" id="add_expense">
-        <div class="container" id="divone">
-        </div>
+        <!-- <form action="/send" method="post"> -->
+            <input type="button" value="Add expense" id="add_expense">
+            <div class="container" id="divone">
+                <input title="expenses" type="date" id="e_id">
+            </div>
+            <input type="submit" value="send" id="send">
+            <input type="button" value="send to backend" id="sdata">
+            <input type="button" value="all expenses" id="ae">
+        <!-- </form> -->
     </div>
 </body>
 </html>
