@@ -103,9 +103,12 @@
             $("input").hide();
             $(document.body).fadeIn(500);
             $("input").fadeIn(1500);
-            var lastDate = new Date();
-            lastDate.setDate(lastDate.getDate());
-            $("#e_id").date('setDate', lastDate);
+            var var_date = new Date();
+            var default_date = var_date.getFullYear()+"-"+"0"+(var_date.getMonth()+1)+"-"+var_date.getDate();
+            $("#u_date").attr("value",default_date);
+            // var lastDate = new Date();
+            // lastDate.setDate(lastDate.getDate());
+            // $("#e_id").date('setDate', lastDate);
             var i = 0;
             var expense_class = "expense";
             var amount_class = "amount";
@@ -142,33 +145,47 @@
                 var jsonObj = [];
                 var expenses_data = {};
                 var j = 0;
-                // for(j=1;j<=i;j++)
-                // {
-                //     // expenses_data ["e_name"] = $(".expense"+j).val();
-                //     // expenses_data ["e_amt"] = $(".amount"+j).val();
-                //     expenses_data ["e_name"+j] = $("[class=expense"+j+"]").val();
-                //     expenses_data ["e_amt"+j] = $("[class=amount"+j+"]").val();
-                //     // jsonObj.push(expenses_data);
-                // }
+                var total_expense = 0;
+                // var var_date = new Date();
+                // var default_date = var_date.getDate()+"-"+(var_date.getMonth()+1)+"-"+var_date.getFullYear();
+                var u_phone = $("#u_phone").val();
+                var custom_date = $("#u_date").val();
+                console.log(custom_date);
+                var final_date = new Date();
+                if (default_date == custom_date) {
+                    final_date = default_date;
+                } else if(custom_date == null) {
+                    final_date = default_date;
+                } else if(default_date != custom_date) {
+                    final_date = custom_date;
+                } else {
+                    alert(default_date,custom_date,final_date);
+                }
+                expenses_data ["_id"] = u_phone + final_date;
                 for(j=1;j<=i;j++)
                 {
-                    var e_name = $("[class=expense"+j+"]").val();
-                    var e_amt = $("[class=amount"+j+"]").val();
-                    tmp = {
-                        'e_name' : e_name,
-                        'e_amt' : e_amt
-                    };
-                    jsonObj.push(tmp);
+                    // expenses_data ["e_name"] = $(".expense"+j).val();
+                    // expenses_data ["e_amt"] = $(".amount"+j).val();
+                    expenses_data ["e_name"+j] = $("[class=expense"+j+"]").val();
+                    expenses_data ["e_amt"+j] = parseInt($("[class=amount"+j+"]").val());
+                    total_expense = total_expense + parseInt($("[class=amount"+j+"]").val());
                 }
-                // expenses_data ["e_name"] = $(".expense1").val();
-                // expenses_data ["e_amt"] = $(".amount1").val();
-                // jsonObj.push(expenses_data);
+                expenses_data ["e_total"] = total_expense;
+                // for(j=1;j<=i;j++)
+                // {
+                //     var name = $("[class=expense"+j+"]").val();
+                //     var amt = $("[class=amount"+j+"]").val();
+                //     tmp = {
+                //         ["e_name"+j] : name,
+                //         ["e_amt"+j] : amt
+                //     };
+                //     jsonObj.push(tmp);
+                // }
+                jsonObj.push(expenses_data);
                 function sendData(dataObj) {
                     $.ajax({
                         url:"/send",
                         type:"POST",
-                        // method:"POST",
-                        // data:{data:JSON.stringify(dataObj)},
                         data:{data:dataObj},
                         dataType:"JSON",
                         success:function(data)
@@ -189,9 +206,10 @@
     <h2 class="container">Welcome to Money Tracker!!</h2>
     <div class="container">
         <!-- <form action="/send" method="post"> -->
+            <input title="expenses" type="tel" id="u_phone" placeholder="Phone">
+            <input title="expenses" type="date" id="u_date" value="1111-11-21">
             <input type="button" value="Add expense" id="add_expense">
             <div class="container" id="divone">
-                <input title="expenses" type="date" id="e_id">
             </div>
             <input type="submit" value="send" id="send">
             <input type="button" value="send to backend" id="sdata">

@@ -25,8 +25,7 @@ run().catch(console.dir);
 app.use(bodyParser.json(), bodyParser.urlencoded({ extended: true }), express.static('public'));
 
 function addData(db, data){
-    var coll_id = Number;
-    const result = db.collection(collname+(coll_id+1)).insertMany(data, {ordered:true});
+    const result = db.collection(collname).insertMany(data, {ordered:true});
     console.log("Rows inserted:"+result.insertedCount);
 }
 
@@ -49,4 +48,6 @@ app.post('/send', (req,res) => {
 
 app.listen(port, () => {
     console.log('App listening at port http://localhost:'+port+'/home');
+    var cd = new Date(Date.now());
+    console.log(cd.getDate()+"/"+cd.getMonth()+"/"+cd.getFullYear());
 });

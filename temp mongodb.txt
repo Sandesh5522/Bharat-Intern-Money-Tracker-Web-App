@@ -134,3 +134,9 @@ Model.updateOne()
 
 nodereg01> db.dropDatabase()
 { ok: 1, dropped: 'nodereg01' }
+
+nodemt> db.nodecollNaN.drop()
+true
+
+nodemt> db.nodecoll1.deleteMany({"e_name1":"Expense03"})
+{ acknowledged: true, deletedCount: 2 }
