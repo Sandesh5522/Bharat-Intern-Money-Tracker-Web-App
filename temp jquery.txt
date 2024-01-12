@@ -1,0 +1,55 @@
+Line 167:
+expenses_data ["e_name"] = $(".expense"+j).val();
+expenses_data ["e_amt"] = $(".amount"+j).val();
+
+Line 172:
+for(j=1;j<=i;j++)
+{
+    var name = $("[class=expense"+j+"]").val();
+    var amt = $("[class=amount"+j+"]").val();
+    tmp = {
+        ["e_name"+j] : name,
+        ["e_amt"+j] : amt
+    };
+    jsonObj.push(tmp);
+}
+
+Line 149:
+var var_date = new Date();
+var default_date = var_date.getDate()+"-"+(var_date.getMonth()+1)+"-"+var_date.getFullYear();
+
+Line 136:
+data:{action:'fetch'},
+
+Line 109:
+var lastDate = new Date();
+lastDate.setDate(lastDate.getDate());
+$("#e_id").date('setDate', lastDate);
+
+Line 121:
+$("#send").click(function() {
+    $("#divone").append($("[class=expense"+i+"]").val(),$("[class=amount"+i+"]").val());
+});
+
+$("#ae").click(function() {
+    for (j=1;j<=i;j++)
+    {
+        $("#divone").append($("[class=expense"+j+"]").val(),$("[class=amount"+j+"]").val());
+    }
+});
+
+<input type="submit" value="send" id="send">
+<input type="button" value="all expenses" id="ae">
+
+function sendData(dataObj) {
+    $.ajax({
+        url:"http://localhost:3000/send",
+        method:"POST",
+        data:dataObj,
+        dataType:"JSON",
+        success:function(data)
+        {
+            alert("Data sent!");
+        }
+    });
+}

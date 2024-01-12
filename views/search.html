@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            /* -webkit-text-size-adjust: 100%; */
+            /* -webkit-tap-highlight-color: rgba(0, 0, 0, 0); */
+            font-size: 15px;
+        }
+
+        body {
+            background-color: #c5c5c5;
+            font-family: "Bahnschrift", sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #8a1f1f;
+            overflow-x: hidden;
+            overflow-wrap: break-word;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-font-smoothing: antialiased;
+            padding: 50px;
+        }
+
+        .container {
+            font-family: "Bahnschrift", sans-serif;
+            background-color: white;
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 40px;
+            box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+            border-radius: 3px;
+        }
+
+        input {
+            font-family: "Bahnschrift";
+            font-size: 15px;
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            border: 1px solid #bbbbbb;
+            border-radius: 3px;
+        }
+
+        input:hover {
+            border-color: #2e2e2e;
+        }
+
+        input:focus {
+            border-color: #004bbd;
+        }
+
+        [type="button"] {
+            font-family: "Bahnschrift", sans-serif;
+            font-size: 15px;
+            background: #00c95a;
+            color: black;
+            border: 1px solid rgba(0, 0, 0, 0.175);
+            border-radius: 3px;
+            padding: 12px 0;
+            cursor: pointer;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            margin-top: 5px;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        [type="button"]:hover {
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+        [type="submit"] {
+            font-family: "Bahnschrift", sans-serif;
+            font-size: 15px;
+            background: #00c95a;
+            color: black;
+            border: 1px solid rgba(0, 0, 0, 0.175);
+            border-radius: 3px;
+            padding: 12px 0;
+            cursor: pointer;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            margin-top: 5px;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        [type="submit"]:hover {
+            background: #00caaf;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $(document.body).hide();
+            $("input").hide();
+            $(document.body).fadeIn(500);
+            $("input").fadeIn(1500);
+            var var_date = new Date();
+            var default_date = var_date.getFullYear()+"-"+"0"+(var_date.getMonth()+1)+"-"+var_date.getDate();
+            $("#u_date").attr("value",default_date);
+
+            function findData(dataObj) {
+                $.ajax({
+                    url:"/find",
+                    type:"POST",
+                    data:{data:dataObj},
+                    dataType:"JSON",
+                    success:function(data)
+                    {
+                        alert("Data sent:"+data);
+                    }
+                });
+            }
+
+            $("#vdata").click(function() {
+                var data = "";
+                var user_phone = $("#u_phone").val();
+                var user_date = $("#u_date").val();
+                data = user_phone + "-" + user_date;
+                console.log(data);
+                findData(data);
+            });
+        });
+    </script>
+    <title>Search</title>
+</head>
+<body>
+    <h2 class="container">Search</h2>
+    <div class="container">
+        <input title="expenses" type="tel" id="u_phone" placeholder="Phone">
+        <input title="expenses" type="date" id="u_date" value="1111-11-21">
+        <input type="button" value="Search" id="vdata">
+        <div class="container" id="divone">
+            <p>Data: <% data %></p>
+        </div>
+        <input type="button" value="Home" onclick="window.location='/home'">
+    </div>
+</body>
+</html>

@@ -13,7 +13,7 @@
         html {
             /* -webkit-text-size-adjust: 100%; */
             /* -webkit-tap-highlight-color: rgba(0, 0, 0, 0); */
-            font-size: 16px;
+            font-size: 15px;
         }
 
         body {
@@ -104,14 +104,17 @@
             $(document.body).fadeIn(500);
             $("input").fadeIn(1500);
             var var_date = new Date();
-            var default_date = var_date.getFullYear()+"-"+"0"+(var_date.getMonth()+1)+"-"+var_date.getDate();
+            var month = var_date.getMonth()+1;
+
+            if(month > 9) { month = month; }
+            else if(month <= 9) { month = "0"+month; }
+
+            var default_date = var_date.getFullYear()+"-"+month+"-"+var_date.getDate();
             $("#u_date").attr("value",default_date);
-            // var lastDate = new Date();
-            // lastDate.setDate(lastDate.getDate());
-            // $("#e_id").date('setDate', lastDate);
             var i = 0;
             var expense_class = "expense";
             var amount_class = "amount";
+
             $("#add_expense").click(function() {
                 $("#divone").append(function() {
                     i++;
@@ -119,39 +122,30 @@
                     $("#divone").append("<input type='text' class="+expense_class+i+" placeholder='Expense name'><input type='text' class="+amount_class+i+" placeholder='Amount'>");
                 });
             });
-            $("#send").click(function() {
-                $("#divone").append($("[class=expense"+i+"]").val(),$("[class=amount"+i+"]").val());
-            });
-            $("#ae").click(function() {
-                for (j=1;j<=i;j++)
-                {
-                    $("#divone").append($("[class=expense"+j+"]").val(),$("[class=amount"+j+"]").val());
-                }
-            });
+
             function sendData(dataObj) {
                 $.ajax({
-                    url:"http://localhost:3000/send",
-                    method:"POST",
-                    data:dataObj,
-                    // data:{action:'fetch'},
+                    url:"/send",
+                    type:"POST",
+                    data:{data:dataObj},
                     dataType:"JSON",
                     success:function(data)
                     {
-                        alert("Data sent!");
+                        alert("Data sent:"+data);
                     }
                 });
             }
+
             $("#sdata").click(function() {
                 var jsonObj = [];
                 var expenses_data = {};
                 var j = 0;
                 var total_expense = 0;
-                // var var_date = new Date();
-                // var default_date = var_date.getDate()+"-"+(var_date.getMonth()+1)+"-"+var_date.getFullYear();
                 var u_phone = $("#u_phone").val();
                 var custom_date = $("#u_date").val();
                 console.log(custom_date);
                 var final_date = new Date();
+
                 if (default_date == custom_date) {
                     final_date = default_date;
                 } else if(custom_date == null) {
@@ -161,39 +155,32 @@
                 } else {
                     alert(default_date,custom_date,final_date);
                 }
-                expenses_data ["_id"] = u_phone + final_date;
+
+                expenses_data ["_id"] = u_phone + "-" + final_date;
+
                 for(j=1;j<=i;j++)
                 {
-                    // expenses_data ["e_name"] = $(".expense"+j).val();
-                    // expenses_data ["e_amt"] = $(".amount"+j).val();
                     expenses_data ["e_name"+j] = $("[class=expense"+j+"]").val();
                     expenses_data ["e_amt"+j] = parseInt($("[class=amount"+j+"]").val());
                     total_expense = total_expense + parseInt($("[class=amount"+j+"]").val());
                 }
+
                 expenses_data ["e_total"] = total_expense;
-                // for(j=1;j<=i;j++)
-                // {
-                //     var name = $("[class=expense"+j+"]").val();
-                //     var amt = $("[class=amount"+j+"]").val();
-                //     tmp = {
-                //         ["e_name"+j] : name,
-                //         ["e_amt"+j] : amt
-                //     };
-                //     jsonObj.push(tmp);
-                // }
                 jsonObj.push(expenses_data);
-                function sendData(dataObj) {
-                    $.ajax({
-                        url:"/send",
-                        type:"POST",
-                        data:{data:dataObj},
-                        dataType:"JSON",
-                        success:function(data)
-                        {
-                            alert("Data sent:"+data);
-                        }
-                    });
-                }
+
+                // function sendData(dataObj) {
+                //     $.ajax({
+                //         url:"/send",
+                //         type:"POST",
+                //         data:{data:dataObj},
+                //         dataType:"JSON",
+                //         success:function(data)
+                //         {
+                //             alert("Data sent:"+data);
+                //         }
+                //     });
+                // }
+
                 sendData(jsonObj);
                 alert(JSON.stringify(jsonObj));
                 console.log(jsonObj);
@@ -205,16 +192,13 @@
 <body>
     <h2 class="container">Welcome to Money Tracker!!</h2>
     <div class="container">
-        <!-- <form action="/send" method="post"> -->
-            <input title="expenses" type="tel" id="u_phone" placeholder="Phone">
-            <input title="expenses" type="date" id="u_date" value="1111-11-21">
-            <input type="button" value="Add expense" id="add_expense">
-            <div class="container" id="divone">
-            </div>
-            <input type="submit" value="send" id="send">
-            <input type="button" value="send to backend" id="sdata">
-            <input type="button" value="all expenses" id="ae">
-        <!-- </form> -->
+        <input title="expenses" type="tel" id="u_phone" placeholder="Phone">
+        <input title="expenses" type="date" id="u_date" value="1111-11-21">
+        <input type="button" value="Add expense" id="add_expense">
+        <div class="container" id="divone">
+        </div>
+        <input type="button" value="Save" id="sdata">
+        <input type="button" value="Search" onclick="window.location='/search'">
     </div>
 </body>
 </html>

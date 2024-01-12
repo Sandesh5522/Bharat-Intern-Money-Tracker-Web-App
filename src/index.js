@@ -29,6 +29,28 @@ function addData(db, data){
     console.log("Rows inserted:"+result.insertedCount);
 }
 
+async function getData(db, data){
+    docs = {};
+    const query = { _id : data };
+    const result = db.collection(collname).find(query, {ordered: true});
+    if((await db.collection(collname)) === 0) {
+        console.log("No documents found!!");
+    }
+    for await (const doc of result) {
+        docs = doc;
+        // console.dir(doc);
+    }
+    console.log("done type:"+typeof(docs));
+    console.dir(docs);
+    var na = Object.keys(docs).map(function (key) { return docs[key]; });
+    console.log("na: "+na);
+    var final_docs = {_id: na[0], e_total: docs.e_total};
+    console.log(final_docs);
+    // console.dir(result.doc);
+    // console.dir(result.namespace);
+    return na;
+}
+
 app.get('/home', (req,res) => {
     client.connect();
     const db = client.db(dbname);
@@ -46,8 +68,24 @@ app.post('/send', (req,res) => {
     // res.sendFile(filePath);
 });
 
+app.get('/search', (req,res) => {
+    client.connect();
+    const db = client.db(dbname);
+    const filePath = path.resolve('views','search.html');
+    res.sendFile(filePath);
+});
+
+app.engine('html', require('ejs').renderFile);
+app.post('/find', (req,res) => {
+    client.connect();
+    const db = client.db(dbname);
+    const result = getData(db, req.body.data);
+    console.dir(result);
+    res.render('searcho.html',{data:[result[0]]});
+});
+
 app.listen(port, () => {
     console.log('App listening at port http://localhost:'+port+'/home');
     var cd = new Date(Date.now());
-    console.log(cd.getDate()+"/"+cd.getMonth()+"/"+cd.getFullYear());
+    console.log("Today's date: "+cd.getDate()+"/"+cd.getMonth()+"/"+cd.getFullYear());
 });
