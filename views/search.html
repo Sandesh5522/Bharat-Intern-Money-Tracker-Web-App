@@ -135,11 +135,17 @@
 <body>
     <h2 class="container">Search</h2>
     <div class="container">
-        <input title="expenses" type="tel" id="u_phone" placeholder="Phone">
+        <form action="/find" method="post">
+            <input title="expenses" type="tel" name="u_phone" id="u_phone" placeholder="Phone">
+            <input title="expenses" type="date" name="u_date" id="u_date" value="1111-11-21">
+            <input type="submit" value="Search">
+            <!-- <input type="button" value="Search" id="vdata"> -->
+        </form>
+        <!-- <input title="expenses" type="tel" id="u_phone" placeholder="Phone">
         <input title="expenses" type="date" id="u_date" value="1111-11-21">
-        <input type="button" value="Search" id="vdata">
+        <input type="button" value="Search" id="vdata"> -->
         <div class="container" id="divone">
-            <p>Data: <% data %></p>
+            <p>Data: <%= data[0] %></p>
         </div>
         <input type="button" value="Home" onclick="window.location='/home'">
     </div>

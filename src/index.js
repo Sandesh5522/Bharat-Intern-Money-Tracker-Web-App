@@ -30,25 +30,29 @@ function addData(db, data){
 }
 
 async function getData(db, data){
-    docs = {};
+    docs = {"Hi":"hello"};
     const query = { _id : data };
-    const result = db.collection(collname).find(query, {ordered: true});
+    const result = await db.collection(collname).find(query, {ordered: true});
     if((await db.collection(collname)) === 0) {
         console.log("No documents found!!");
     }
-    for await (const doc of result) {
+    for await (doc of result) {
         docs = doc;
-        // console.dir(doc);
+        // docs = JSON.stringify(doc);
+        // return doc;
+        console.dir("Doc :"+doc);
     }
     console.log("done type:"+typeof(docs));
-    console.dir(docs);
-    var na = Object.keys(docs).map(function (key) { return docs[key]; });
-    console.log("na: "+na);
-    var final_docs = {_id: na[0], e_total: docs.e_total};
-    console.log(final_docs);
+    console.dir("Docs: "+result(docs));
+    // console.log(JSON.stringify(result));
+    // var na = Object.keys(docs).map(function (key) { return docs[key]; });
+    // console.log("na: "+na);
+    // var final_docs = {_id: na[0], e_total: docs.e_total};
+    // console.log(final_docs);
+
     // console.dir(result.doc);
     // console.dir(result.namespace);
-    return na;
+    // return na;
 }
 
 app.get('/home', (req,res) => {
@@ -79,9 +83,13 @@ app.engine('html', require('ejs').renderFile);
 app.post('/find', (req,res) => {
     client.connect();
     const db = client.db(dbname);
-    const result = getData(db, req.body.data);
-    console.dir(result);
-    res.render('searcho.html',{data:[result[0]]});
+    // var response_data = req.body.data;
+    response_data = req.body.u_phone + "-" + req.body.u_date;
+    console.log(response_data);
+    const result = getData(db, response_data);
+    console.dir("Result: "+JSON.stringify(result)+"||"+JSON.stringify(docs));
+    console.log("Result: "+docs+"||"+JSON.stringify(docs));
+    res.render('searcho.html',{data:[docs["Hi"]]});
 });
 
 app.listen(port, () => {
