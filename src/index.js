@@ -30,7 +30,7 @@ function addData(db, data){
 }
 
 async function getData(db, data){
-    docs = {"Hi":"hello"};
+    docs = {};
     const query = { _id : data };
     const result = await db.collection(collname).find(query, {ordered: true});
     if((await db.collection(collname)) === 0) {
@@ -38,21 +38,10 @@ async function getData(db, data){
     }
     for await (doc of result) {
         docs = doc;
-        // docs = JSON.stringify(doc);
-        // return doc;
-        console.dir("Doc :"+doc);
+        // console.dir("Doc :"+doc);
     }
-    console.log("done type:"+typeof(docs));
-    console.dir("Docs: "+result(docs));
-    // console.log(JSON.stringify(result));
-    // var na = Object.keys(docs).map(function (key) { return docs[key]; });
-    // console.log("na: "+na);
-    // var final_docs = {_id: na[0], e_total: docs.e_total};
-    // console.log(final_docs);
-
-    // console.dir(result.doc);
-    // console.dir(result.namespace);
-    // return na;
+    // console.log("done type:"+typeof(docs));
+    // console.dir("Docs: "+docs);
 }
 
 app.get('/home', (req,res) => {
@@ -80,20 +69,26 @@ app.get('/search', (req,res) => {
 });
 
 app.engine('html', require('ejs').renderFile);
-app.post('/find', (req,res) => {
+app.post('/find', async (req,res) => {
     client.connect();
     const db = client.db(dbname);
-    // var response_data = req.body.data;
     response_data = req.body.u_phone + "-" + req.body.u_date;
     console.log(response_data);
-    const result = getData(db, response_data);
-    console.dir("Result: "+JSON.stringify(result)+"||"+JSON.stringify(docs));
+    await getData(db, response_data);
     console.log("Result: "+docs+"||"+JSON.stringify(docs));
-    res.render('searcho.html',{data:[docs["Hi"]]});
+    console.log("Length of object docs: "+Object.keys(docs).length);
+    docs = Object.keys(docs).map(function (key) { return docs[key]; });
+    console.log(docs);
+    // JSON.stringify(docs, null, 2)
+    res.render('res.html',{data:[docs]});
 });
 
 app.listen(port, () => {
     console.log('App listening at port http://localhost:'+port+'/home');
     var cd = new Date(Date.now());
-    console.log("Today's date: "+cd.getDate()+"/"+cd.getMonth()+"/"+cd.getFullYear());
+    var var_date = new Date();
+    var month = var_date.getMonth()+1;
+    if(month > 9) { month = month; }
+    else if(month <= 9) { month = "0"+month; }
+    console.log("Today's date: "+cd.getDate()+"/"+month+"/"+cd.getFullYear());
 });

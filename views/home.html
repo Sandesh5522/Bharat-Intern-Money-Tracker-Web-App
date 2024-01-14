@@ -155,7 +155,6 @@
                 } else {
                     alert(default_date,custom_date,final_date);
                 }
-
                 expenses_data ["_id"] = u_phone + "-" + final_date;
 
                 for(j=1;j<=i;j++)
@@ -167,20 +166,6 @@
 
                 expenses_data ["e_total"] = total_expense;
                 jsonObj.push(expenses_data);
-
-                // function sendData(dataObj) {
-                //     $.ajax({
-                //         url:"/send",
-                //         type:"POST",
-                //         data:{data:dataObj},
-                //         dataType:"JSON",
-                //         success:function(data)
-                //         {
-                //             alert("Data sent:"+data);
-                //         }
-                //     });
-                // }
-
                 sendData(jsonObj);
                 alert(JSON.stringify(jsonObj));
                 console.log(jsonObj);

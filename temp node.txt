@@ -1,0 +1,2 @@
+To convert object to array:
+var na = Object.keys(docs).map(function (key) { return docs[key]; });

@@ -53,3 +53,40 @@ function sendData(dataObj) {
         }
     });
 }
+
+In search.html:
+function findData(dataObj) {
+    $.ajax({
+        url:"/find",
+        type:"POST",
+        data:{data:dataObj},
+        dataType:"JSON",
+        success:function(data)
+        {
+            alert("Data sent:"+data);
+        }
+    });
+}
+
+$("#vdata").click(function() {
+    var data = "";
+    var user_phone = $("#u_phone").val();
+    var user_date = $("#u_date").val();
+    data = user_phone + "-" + user_date;
+    console.log(data);
+    findData(data);
+});
+
+In home.html:
+function sendData(dataObj) {
+                    $.ajax({
+                        url:"/send",
+                        type:"POST",
+                        data:{data:dataObj},
+                        dataType:"JSON",
+                        success:function(data)
+                        {
+                            alert("Data sent:"+data);
+                        }
+                    });
+                }

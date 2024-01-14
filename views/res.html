@@ -100,25 +100,14 @@
     <script>
         $(document).ready(function() {
             $(document.body).hide();
-            $("input").hide();
             $(document.body).fadeIn(500);
-            $("input").fadeIn(1500);
-            var var_date = new Date();
-            var default_date = var_date.getFullYear()+"-"+"0"+(var_date.getMonth()+1)+"-"+var_date.getDate();
-            $("#u_date").attr("value",default_date);
         });
     </script>
-    <title>Search</title>
+    <title>Document</title>
 </head>
 <body>
-    <h2 class="container">Search</h2>
-    <div class="container">
-        <form action="/find" method="post">
-            <input title="expenses" type="tel" name="u_phone" id="u_phone" placeholder="Phone">
-            <input title="expenses" type="date" name="u_date" id="u_date" value="1111-11-21">
-            <input type="submit" value="Search">
-        </form>
-        <input type="button" value="Home" onclick="window.location='/home'">
+    <div class="container" id="data">
+        <p>Data: <%= data %></p> 
     </div>
 </body>
 </html>
